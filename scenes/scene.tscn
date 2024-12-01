@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3 uid="uid://78v286j6ttnr"]
+
+[ext_resource type="Script" path="res://scripts/game_rules.gd" id="1_wx1km"]
+[ext_resource type="AudioStream" uid="uid://dpcau8ax4ddkb" path="res://sound/hit.wav" id="2_46lbd"]
+[ext_resource type="Script" path="res://scripts/explosion.gd" id="2_ahvej"]
+[ext_resource type="AudioStream" uid="uid://bpfii8xwkdho1" path="res://sound/row-removal.wav" id="3_hd8pm"]
+
+[sub_resource type="Gradient" id="Gradient_ibf24"]
+colors = PackedColorArray(1, 1, 0.85098, 1, 1, 1, 0.870588, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_60s56"]
+gradient = SubResource("Gradient_ibf24")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Curve" id="Curve_phrbi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.30083, 0.0, 0, 0]
+point_count = 2
+
+[node name="Scene" type="Node2D" node_paths=PackedStringArray("base", "materialized_bricks", "background", "explosion", "debug", "sound_hit", "sound_row_removal")]
+script = ExtResource("1_wx1km")
+base = NodePath("Node2D/Container")
+materialized_bricks = NodePath("Node2D/Materialized")
+background = NodePath("Node2D/Container/Background")
+explosion = NodePath("Node2D/Explosion")
+debug = NodePath("Node2D/Debug")
+sound_hit = NodePath("HitSoundPlayer")
+sound_row_removal = NodePath("RowRemovalPlayer")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(50, 0)
+
+[node name="Container" type="Node2D" parent="Node2D"]
+
+[node name="Background" type="ColorRect" parent="Node2D/Container"]
+offset_left = -600.0
+offset_top = 200.0
+offset_right = -550.0
+offset_bottom = 250.0
+color = Color(1, 0.921569, 0.231373, 1)
+
+[node name="Materialized" type="Node2D" parent="Node2D"]
+
+[node name="Explosion" type="Node2D" parent="Node2D" node_paths=PackedStringArray("expl")]
+script = ExtResource("2_ahvej")
+expl = NodePath("CPUParticles2D")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Node2D/Explosion"]
+amount = 15
+lifetime = 0.5
+explosiveness = 1.0
+texture = SubResource("GradientTexture2D_60s56")
+emission_shape = 3
+emission_rect_extents = Vector2(100, 10)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+scale_amount_min = 0.05
+scale_amount_max = 0.25
+scale_amount_curve = SubResource("Curve_phrbi")
+color = Color(1, 1, 0.886275, 1)
+
+[node name="Debug" type="ColorRect" parent="Node2D"]
+offset_left = -600.0
+offset_top = -10.0
+offset_right = -580.0
+offset_bottom = 10.0
+
+[node name="HitSoundPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_46lbd")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="HitSoundPlayer"]
+stream = ExtResource("2_46lbd")
+
+[node name="RowRemovalPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_hd8pm")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RowRemovalPlayer"]
+stream = ExtResource("3_hd8pm")
