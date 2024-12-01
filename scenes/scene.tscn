@@ -47,8 +47,10 @@ script = ExtResource("2_ahvej")
 expl = NodePath("CPUParticles2D")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Node2D/Explosion"]
+emitting = false
 amount = 15
 lifetime = 0.5
+one_shot = true
 explosiveness = 1.0
 texture = SubResource("GradientTexture2D_60s56")
 emission_shape = 3

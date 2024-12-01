@@ -104,7 +104,7 @@ func _process(_delta: float) -> void:
 		fast_forward_disabled = true
 		materialize(cur._x, cur._y, cur.get_shape())
 		hide_cursor()
-		process_queue.append(func(): pause_until = TimeUtils.wait_for_ms(300))
+		process_queue.append(func(): pause_until = TimeUtils.wait_for_ms(150))
 		process_queue.append(func(): reset_cursor())
 
 	if Time.get_ticks_msec() - (last_move + 1200) > 0:
@@ -189,7 +189,7 @@ func add_y(ry: int) -> void:
 		fast_forward_disabled = true
 		materialize(cur._x, cur._y, shape)
 		hide_cursor()
-		process_queue.append(func(): pause_until = TimeUtils.wait_for_ms(300))
+		process_queue.append(func(): pause_until = TimeUtils.wait_for_ms(150))
 		process_queue.append(func(): reset_cursor())
 
 
